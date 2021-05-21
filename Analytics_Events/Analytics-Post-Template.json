@@ -1,0 +1,25 @@
+[
+#foreach( ${event} in ${fullEventList} )
+{
+"eventApplication": "${event.application.name}",
+"topSeverity": "${topSeverity}",
+"eventGuid": "${event.guid}",
+"eventTime": ${event.eventTime.getTime()},
+"eventTypeKey": "${event.eventTypeKey}",
+"eventDisplayName": "${event.displayName}",
+"eventSummaryMessage": "${event.summaryMessage}",
+"eventDeepLink": "${event.deepLink}",
+"eventMessage": "${event.eventMessage}",
+"policyName": "${policy.name}",
+"actionName": "${action.name}",
+"actionTriggerTime": ${action.triggerTime.getTime()},
+"eventTier": "$!{event.tier.name}",
+"eventNode": "$!{event.node.name}",
+"eventHealthRuleEvent": ${event.healthRuleEvent},
+"eventHealthRuleName": "$!{event.healthRule.name}",
+"eventIncidentName": "$!{event.incident.name}",
+"eventBtPerformanceEvent": ${event.btPerformanceEvent},
+"accountName": "${account.name}"
+}#if( $foreach.hasNext ),#end
+#end
+]
