@@ -1,0 +1,93 @@
+#set( $sm = $!{latestEvent.summaryMessage.replace('"',"*")} )
+#set( $sm = $sm.replace("<b>", "*") )
+#set( $sm = $sm.replace("</b>", "*") )
+#set( $sm = $sm.replace("<br>", " ") )
+#set( $sm = $sm.replace("null"," ") )
+
+{
+	"blocks": [
+		{
+			"type": "section",
+			"text": {
+				#if( ${latestEvent.severity} == "ERROR" )
+					"type": "mrkdwn",
+					"text": ":red_circle: *New Alert from AppDynamics:* ${latestEvent.displayName}\n\n*Summary:*\n$sm"
+				#elseif( ${latestEvent.severity} == "WARN" )
+					"type": "mrkdwn",
+					"text": ":warning: *New Alert from AppDynamics:* ${latestEvent.displayName}\n\n*Summary:*\n$sm"
+				#else
+					"type": "mrkdwn",
+					"text": ":information_source: *New Alert from AppDynamics:* ${latestEvent.displayName}\n\n*Summary:*\n$sm"
+				#end
+			},
+				"accessory": {
+				"type": "image",
+				"image_url": "https://share-logos.s3-us-west-1.amazonaws.com/appd-s-logo.png",
+				"alt_text": "logo"
+			},
+		},
+		{
+			"type": "section",
+			"fields": [
+				{
+					"type": "mrkdwn",
+					"text": "*Application:*\n${latestEvent.application.name}"
+				},
+				{
+					"type": "mrkdwn",
+					"text": "*When:*\n${latestEvent.eventTime}"
+				},
+				{
+					"type": "mrkdwn",
+					"text": "*Tier:*\n${latestEvent.tier.name}"
+				},
+				{
+					"type": "mrkdwn",
+					"text": "*Severity:*\n${latestEvent.severity}"
+				},
+				{
+					"type": "mrkdwn",
+					"text": "*Node:*\n${latestEvent.node.name}"
+				},
+				{
+					"type": "mrkdwn",
+					"text": "*Triggered by:*\n${policy.name}"
+				},
+			]
+		},
+		{
+			"type": "actions",
+			"elements": [
+				{
+					"type": "button",
+					"text": {
+						"type": "plain_text",
+						"emoji": true,
+						"text": "Go to Alert in AppDynamics"
+					},
+					#if( ${latestEvent.severity} == "ERROR" )
+						"style": "danger",
+					#elseif( ${latestEvent.severity} == "WARN" )
+						"style": "primary",
+					#end
+					"value": "click_me_123",
+					"url": "${latestEvent.deepLink}"
+				},
+				{
+					"type": "button",
+					"text": {
+						"type": "plain_text",
+						"emoji": true,
+						"text": "Start Webex Session"
+					},
+					"style": "primary",
+					"value": "click_me_123",
+					"url": "https://cisco.webex.com"
+				}
+			]
+		},
+		{
+			"type": "divider"
+		},
+	]
+}
